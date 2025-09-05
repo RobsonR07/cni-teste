@@ -1,0 +1,38 @@
+No primeiro desafio, a extração de dados foi simplificada pela existência de um link direto para a API, que nos fornecia os dados em um formato já estruturado (JSON). 
+No entanto, na maioria dos casos, os dados não estão tão acessíveis e é preciso adotar outras estratégias para consegui-los.
+
+A seguir, apresento algumas abordagens para capturar dados em cenários mais complexos, seja por falta de uma API pública ou pela presença de verificações contra robôs (como o reCAPTCHA).
+
+1 - Explorar o site em busca de APIs ocultas:
+
+    A primeira etapa seria explorar o site utilizando o painel de desenvolvedor do navegador (F12), especificamente a aba "Rede" (Network), em busca de requisições (XHR). 
+Em muitos sistemas, os endpoints que o front-end utiliza para se comunicar com o back-end acabam expondo os dados de forma estruturada, permitindo resgatá-los com uma simples requisição HTTP.
+
+    Caso nenhum endpoint seja encontrado, a exploração continua. Uma tática comum é tentar adicionar /docs ou /api ao final da URL base do site, o que pode revelar uma 
+documentação de API não listada publicamente.
+
+2 - Estudo de Caso: A Descoberta da API no Site do IBGE
+
+    Se a investigação inicial não revela uma API, o próximo passo é analisar o comportamento do site. O próprio site do desafio é um exemplo perfeito de como 
+essa exploração leva a um resultado importante:
+
+    Passo 1: A navegação começa no portal de pesquisa do IPCA: https://sidra.ibge.gov.br/pesquisa/snipc/ipca
+
+    Passo 2: Dentro do site, identificamos que a tabela relevante é a "1737", que trata da série histórica. Acessamos sua página direta: https://sidra.ibge.gov.br/tabela/1737
+
+    Passo 3: Nesta página, em vez de tentar extrair os dados da tabela HTML, investigamos os botões de ação. Ao inspecionar o botão "Compartilhar", descobrimos que ele gera um link que é,
+na verdade, uma chamada de API completa e funcional: https://apisidra.ibge.gov.br/values/t/1737/n1/all/v/63,2266/p/all/d/v63%202,v2266%2013
+
+    Este "achado" transforma o que parecia ser um problema de web scraping complexo em uma simples chamada de API, bastando apenas ajustar os parâmetros da URL para obter os dados necessários.
+
+    Este metodo foi aplicado na ETAPA 2 do "bot.py" os dados foram baixados direto da URL da API encontrada no site do IBGE.
+
+3 - Web Scraping (Raspagem de Dados):
+
+    Este seria um dos últimos recursos para sites cujo conteúdo é carregado diretamente no HTML, sem a necessidade de interações complexas. A ideia é fazer uma requisição HTTP GET para obter todo o conteúdo HTML da página e, 
+então, utilizar bibliotecas Python como Beautiful Soup (BS4) ou frameworks como Scrapy para extrair (ou "raspar") os dados diretamente das tags do HTML.
+
+4 - Automação e simulação de navegação:
+
+    Este é o cenário ideal para sites protegidos por reCAPTCHA ou que exigem login via formulário. Ferramentas como Selenium ou Playwright são utilizadas para controlar um navegador de forma automatizada. 
+O script busca elementos na página (usando seletores de CSS ou XPath) para realizar ações como preencher formulários, clicar em botões e simular toda a navegação de um usuário real até chegar à página com os dados.
