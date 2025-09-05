@@ -14,7 +14,7 @@ Este projeto é um robô (bot) em Python que captura metadados sobre a série hi
 **1. Clone o Repositório**
 
 ```bash
-git clone https://github.com/RobsonR07/teste-cni.git
+git clone https://github.com/RobsonR07/cni-teste.git
 ```
 
 **2. Acesse a Pasta do Projeto**
